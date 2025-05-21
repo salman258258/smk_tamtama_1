@@ -12,18 +12,37 @@ class JadwalScreen extends StatefulWidget {
 
 class _JadwalScreenState extends State<JadwalScreen> {
   String selectedDay = "Senin";
-  DateTime baseDate = DateTime(2025, 3, 17); // Senin, 17 Maret 2025
+  List<Map<String, dynamic>> scheduleItems = [];
+  late Future<void> _firebaseInitialization;
+
+  final Map<String, int> dayNameToIndex = {
+    'Senin': DateTime.monday,
+    'Selasa': DateTime.tuesday,
+    'Rabu': DateTime.wednesday,
+    'Kamis': DateTime.thursday,
+    'Jumat': DateTime.friday,
+  };
 
   final List<String> days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
-
-  List<Map<String, dynamic>> scheduleItems = [];
-
-  late Future<void> _firebaseInitialization;
 
   @override
   void initState() {
     super.initState();
     _firebaseInitialization = Firebase.initializeApp();
+    fetchSchedule(); // fetch awal
+  }
+
+  DateTime getDateForSelectedDay() {
+    DateTime today = DateTime.now();
+    int selectedWeekday = dayNameToIndex[selectedDay]!;
+    int difference = selectedWeekday - today.weekday;
+
+    if (difference < 0) {
+      // Hari yang sudah lewat, ambil minggu berikutnya
+      difference += 7;
+    }
+
+    return today.add(Duration(days: difference));
   }
 
   Future<void> fetchSchedule() async {
@@ -42,13 +61,11 @@ class _JadwalScreenState extends State<JadwalScreen> {
             scheduleItems = List<Map<String, dynamic>>.from(items);
           });
         } else {
-          print('⚠️ Data items tidak ditemukan atau bukan List');
           setState(() {
             scheduleItems = [];
           });
         }
       } else {
-        print('⚠️ Dokumen untuk $selectedDay tidak ditemukan');
         setState(() {
           scheduleItems = [];
         });
@@ -82,8 +99,8 @@ class _JadwalScreenState extends State<JadwalScreen> {
   }
 
   Widget _buildMainScreen() {
-    int dayIndex = days.indexOf(selectedDay);
-    String formattedDate = DateFormat('d MMMM yyyy').format(baseDate.add(Duration(days: dayIndex)));
+    DateTime selectedDate = getDateForSelectedDay();
+    String formattedDate = DateFormat('d MMMM yyyy', 'id_ID').format(selectedDate);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -105,10 +122,11 @@ class _JadwalScreenState extends State<JadwalScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Maret 2025',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            Text(
+              DateFormat('MMMM yyyy', 'id_ID').format(selectedDate),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -120,7 +138,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
                         setState(() {
                           selectedDay = day;
                         });
-                        fetchSchedule(); // Fetch jadwal baru
+                        fetchSchedule();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: selectedDay == day ? const Color(0xFF224820) : Colors.white,
@@ -141,7 +159,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
               "$selectedDay,",
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             Text(
               formattedDate,
               style: const TextStyle(fontSize: 14),
@@ -176,25 +194,16 @@ class _JadwalScreenState extends State<JadwalScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border(
-          left: BorderSide(color: Colors.green,width: 3)
+        border: const Border(
+          left: BorderSide(color: Colors.green, width: 3),
         ),
         boxShadow: [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.1),
-        offset: Offset(0, 4),
-        blurRadius: 6,        // Efek blur
-        spreadRadius: 0,      // Tidak menyebar ke sisi lain
-      ),
-    ],
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.green.withOpacity(0.3),
-        //     blurRadius: 5,
-        //     spreadRadius: 1,
-        //     offset: const Offset(-5, 0),
-        //   ),
-        // ],
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: const Offset(0, 4),
+            blurRadius: 6,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +219,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(width: 10),
               SizedBox(
                 width: 25,
                 height: 25,
@@ -222,35 +231,34 @@ class _JadwalScreenState extends State<JadwalScreen> {
             ],
           ),
           const Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
+           Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Waktu', style: TextStyle(fontSize: 12)),
+                Text(
+                  waktu,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(width: 40),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Waktu', style: TextStyle(fontSize: 12)),
-                  SizedBox(width: 55),
-                  Text('Pengajar', style: TextStyle(fontSize: 12)),
-                ],
-              ),
-              Row(
-                children: [
+                  const Text('Pengajar', style: TextStyle(fontSize: 12)),
                   Text(
-                    waktu,
+                    pengajar,
                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Text(
-                      pengajar,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
+          )
         ],
       ),
     );

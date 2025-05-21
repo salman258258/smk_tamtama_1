@@ -53,7 +53,6 @@ class SemesterCard extends StatelessWidget {
               width: 2,
               height: 60,
               decoration: const BoxDecoration(
-                color: Colors.green,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12),
                   bottomLeft: Radius.circular(12),

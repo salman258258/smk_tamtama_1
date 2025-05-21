@@ -78,82 +78,89 @@ void initState() {
   }
 
   Widget _buildSliverAppBar() {
-    User? user = FirebaseAuth.instance.currentUser;
-    String username = user?.email?.split('@')[0] ?? 'Guest';
+    Widget _buildCircleIcon(IconData icon) {
+  return Container(
+    padding: const EdgeInsets.all(8),
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      color: Color(0xFFE0E0E0), // Warna abu muda
+    ),
+    child: Icon(
+      icon,
+      size: 20,
+      color: Colors.black54,
+    ),
+  );
+}
+ User? user = FirebaseAuth.instance.currentUser;
+String username = user?.email?.split('@')[0] ?? 'Guest';
+if (username.isNotEmpty) {
+  username = username[0].toUpperCase() + username.substring(1);
+}
     return SliverAppBar(
-      automaticallyImplyLeading: false,
-      pinned: true,
-      expandedHeight: 80,
-      elevation: 0,
-      shadowColor: Colors.transparent,
-      flexibleSpace: FlexibleSpaceBar(
-        background: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromRGBO(57, 128, 49, 1.0),
-                Color.fromRGBO(34, 72, 32, 1.0),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
+  automaticallyImplyLeading: false,
+  pinned: true,
+  backgroundColor: Colors.white,
+  expandedHeight: 80,
+  elevation: 0,
+  shadowColor: Colors.transparent,
+  flexibleSpace: FlexibleSpaceBar(
+    background: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: Row(
+        children: [
+          const CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage('assets/images/rapli.png'),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, bottom: 16.0, right: 16.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const CircleAvatar(
-                  radius: 18,
-                  backgroundImage: AssetImage('assets/images/rapli.png'),
+          const SizedBox(width: 12),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Good Morning,',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
                 ),
-                const SizedBox(width: 12),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      username,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '2211104056',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
+              ),
+              Text(
+                username, // AMBIL DARI DATABASE
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
-                Spacer(),
-                Icon(Icons.notifications, color: Colors.yellow, size: 24),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
+          const Spacer(),
+          Row(
+            children: [
+             _buildCircleIcon(Icons.notifications_none),
+              const SizedBox(width: 8),
+              _buildCircleIcon(Icons.sync_alt), // bisa kamu ganti sesuai kebutuhan
+            ],
+          ),
+        ],
       ),
-      backgroundColor: Colors.transparent,
-    );
-  }
+    ),
+  ),
+);
+
+}
 
   Widget _buildBodyContent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 20),
+        const SizedBox(height: 0),
         _buildScheduleTodayCard(),
-        const SizedBox(height: 20),
-        const SizedBox(height: 20),
+        const SizedBox(height: 0),
+        const SizedBox(height: 0),
         _buildFeatureSection(),
-        const SizedBox(height: 30),
+        const SizedBox(height: 20),
         _buildNewsSection(),
         const SizedBox(height: 20),
       ],
@@ -174,7 +181,7 @@ void initState() {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Jadwal Hari Ini',
+          'JADWAL HARI INI',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 10),
@@ -243,34 +250,35 @@ void initState() {
             ],
           ),
           const Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
+        Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Waktu', style: TextStyle(fontSize: 12)),
+                Text(
+                  waktu,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(width: 40),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Waktu', style: TextStyle(fontSize: 12)),
-                  SizedBox(width: 55),
-                  Text('Pengajar', style: TextStyle(fontSize: 12)),
-                ],
-              ),
-              Row(
-                children: [
+                  const Text('Pengajar', style: TextStyle(fontSize: 12)),
                   Text(
-                    waktu,
+                    pengajar,
                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Text(
-                      pengajar,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
+          )
+
         ],
       ),
     );
@@ -293,6 +301,7 @@ void initState() {
           const Text('FITUR APLIKASI', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           GridView.builder(
+            padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -327,9 +336,14 @@ void initState() {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
-            boxShadow: const [
-              BoxShadow(color: Colors.black12, blurRadius: 3, spreadRadius: 0.5),
-            ],
+            boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: Offset(0, 4),
+            blurRadius: 6,
+            spreadRadius: 0,
+          ),
+        ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(10),

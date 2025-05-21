@@ -72,12 +72,16 @@ class _LoginPageState extends State<LoginPage> {
                 controller: _emailController, // Controller untuk email
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey[300],
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
                   ),
-                  labelText: 'Email', // Label Email
+                  hintText: 'Email',
+                   hintStyle: const TextStyle(
+                    fontWeight: FontWeight.bold, // INI YANG MEMBUATNYA BOLD
+                    color: Colors.black54,       // Opsional: ubah warna jika perlu
+                  ),
                   prefixIcon: const Icon(Icons.person_outlined),
                 ),
               ),
@@ -91,12 +95,16 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: _isObscured,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey[300],
+                  fillColor: const Color(0xFFF1F1F1),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
                   ),
-                  labelText: 'Password',
+                  hintText: 'Password',
+                  hintStyle: const TextStyle(
+                    fontWeight: FontWeight.bold, // INI YANG MEMBUATNYA BOLD
+                    color: Colors.black54,       // Opsional: ubah warna jika perlu
+                  ),
                   prefixIcon: const Icon(Icons.lock_outlined),
                   suffixIcon: IconButton(
                     icon: Icon(
