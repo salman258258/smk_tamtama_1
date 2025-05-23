@@ -6,13 +6,18 @@ class NilaiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: const Text(
           'Nilai Siswa',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: 18,
+           fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Container(
+         color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,9 +45,11 @@ class SemesterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return GestureDetector(
       onTap: () => _showNilaiPopup(context),
       child: Card(
+        color: Colors.white,
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -80,19 +87,20 @@ class SemesterCard extends StatelessWidget {
   }
 
   void _showNilaiPopup(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // Menggunakan full screen tinggi body
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return DraggableScrollableSheet(
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent, // buat background sheet jadi transparan supaya borderRadius kelihatan
+    builder: (context) {
+      return ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        child: DraggableScrollableSheet(
           expand: false,
-          initialChildSize: 0.8, // Tinggi full body
-          minChildSize: 0.5, 
+          initialChildSize: 0.8,
+          minChildSize: 0.5,
           builder: (context, scrollController) {
             return Container(
+              color: Colors.white,
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,21 +116,20 @@ class SemesterCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                   Text(
+                  Text(
                     year,
                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                    Row(
-                      children: [
-                        Text(
+                  Row(
+                    children: [
+                      Text(
                         semester,
-                        style: const TextStyle(fontSize: 12,),
+                        style: const TextStyle(fontSize: 12),
                       ),
                       const Spacer(),
-                      const Text(
-                        'Rata-rata Nilai 89.9')
-                      ],
-                    ),
+                      const Text('Rata-rata Nilai 89.9'),
+                    ],
+                  ),
                   const SizedBox(height: 16),
                   Expanded(
                     child: ListView(
@@ -138,10 +145,12 @@ class SemesterCard extends StatelessWidget {
               ),
             );
           },
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 }
 
 class NilaiTile extends StatelessWidget {
@@ -153,6 +162,8 @@ class NilaiTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 3,
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: ListTile(
         title: Text(mapel, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

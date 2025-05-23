@@ -157,7 +157,7 @@ if (username.isNotEmpty) {
       children: [
         const SizedBox(height: 0),
         _buildScheduleTodayCard(),
-        const SizedBox(height: 0),
+        const SizedBox(height: 20),
         const SizedBox(height: 0),
         _buildFeatureSection(),
         const SizedBox(height: 20),
@@ -286,10 +286,9 @@ if (username.isNotEmpty) {
 
   Widget _buildFeatureSection() {
     List<Map<String, dynamic>> features = [
-      {'icon': 'assets/icons/book.png', 'label': 'Buku', 'screen': null},
+      {'icon': 'assets/icons/book.png', 'label': 'PR', 'screen': null},
       {'icon': 'assets/icons/grade.png', 'label': 'Nilai', 'screen': () => const NilaiScreen()},
       {'icon': 'assets/icons/report.png', 'label': 'Laporan', 'screen': null},
-      {'icon': 'assets/icons/book.png', 'label': 'Buku', 'screen': null},
       {'icon': 'assets/icons/book_1.png', 'label': 'Jadwal', 'screen': () => const JadwalScreen()},
     ];
 
@@ -298,7 +297,7 @@ if (username.isNotEmpty) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('FITUR APLIKASI', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text('FITUR', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           GridView.builder(
             padding: EdgeInsets.zero,
@@ -357,44 +356,109 @@ if (username.isNotEmpty) {
   }
 
   Widget _buildNewsSection() {
+    List<Map<String, String>> tugasList = [
+    {
+      'judul': 'PR.1 - PPT RUMUS ROY SURYO',
+      'mapel': 'ILMU PENGETAHUAN ALAM',
+      'deadline': 'Minggu, 25 Mei 2025 - 23:59'
+    },
+    {
+      'judul': 'PR.2 - VIDEO EKOSISTEM',
+      'mapel': 'ILMU PENGETAHUAN SOSIAL',
+      'deadline': 'Senin, 26 Mei 2025 - 12:00'
+    },
+    {
+      'judul': 'PR.3 - LATIHAN SOAL PTS',
+      'mapel': 'MATEMATIKA',
+      'deadline': 'Selasa, 27 Mei 2025 - 09:00'
+    },
+  ];
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('BERITA', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          SingleChildScrollView(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('TIMELINE', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 120, 
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildNewsCard(),
-                const SizedBox(width: 15),
-                _buildNewsCard(),
-              ],
-            ),
+            itemCount: tugasList.length,
+            itemBuilder: (context, index) {
+              final tugas = tugasList[index];
+              return Container(
+                margin: EdgeInsets.only(right: 15, left: index == 0 ? 5 : 0),
+                width: 280, // Lebar card
+                child: _buildTugasCard(
+                  tugas['judul'] ?? '',
+                  tugas['mapel'] ?? '',
+                  tugas['deadline'] ?? ''
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildTugasCard(String judul, String mapel, String deadline) {
+  return Container(
+    margin: const EdgeInsets.only(bottom: 15),
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      border: Border(
+          left: BorderSide(color: Colors.red, width: 3),
+        ),
+      boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            offset: Offset(0, 4),
+            blurRadius: 6,
+            spreadRadius: 0,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildNewsCard() {
-    return SizedBox(
-      width: 350,
-      child: Container(
-        height: 180,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          image: const DecorationImage(
-            image: AssetImage('assets/images/news.png'),
-            fit: BoxFit.cover,
-          ),
-          boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 2),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(judul, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 5),
+        Text(mapel, style: const TextStyle(fontSize: 12, color: Colors.black87)),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(deadline, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
           ],
-        ),
-      ),
-    );
-  }
+        )
+      ],
+    ),
+  );
 }
+}
+
+//   Widget _buildNewsCard() {
+//     return SizedBox(
+//       width: 350,
+//       child: Container(
+//         height: 180,
+//         decoration: BoxDecoration(
+//           borderRadius: BorderRadius.circular(15),
+//           image: const DecorationImage(
+//             image: AssetImage('assets/images/news.png'),
+//             fit: BoxFit.cover,
+//           ),
+//           boxShadow: const [
+//             BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 2),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

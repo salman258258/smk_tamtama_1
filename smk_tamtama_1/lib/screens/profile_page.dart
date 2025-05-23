@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -10,6 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: ProfilePage(),
@@ -17,141 +20,112 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool allowFaceId = true;
+  bool showCoins = true;
+  bool incognitoMode = false;
+
+String generateRandomIndoPhoneNumber() {
+  final random = Random();
+  String number = '+62';
+  for (int i = 0; i < 10; i++) {
+    number += random.nextInt(10).toString();
+  }
+  return number;
+}
+  @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final email = user?.email ?? 'Belum login';
+    final username = email.split('@')[0];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-      ),
-      body: Column(
-        children: [
-          // Kartu Profil
-          _buildProfileCard(),
-          const SizedBox(height: 20),
-          // Daftar Menu
-          Expanded(
-            child: ListView(
-              children: [
-                _buildMenuItem(Icons.credit_card, "Kartu Tanda Siswa"),
-                _buildMenuItem(Icons.person_outline, "Ubah Role Pengguna"),
-                _buildMenuItem(Icons.settings, "Pengaturan"),
-                const SizedBox(height: 70),
-                _buildMenuItem(Icons.logout, "Logout", isLogout: true),
-              ],
-            ),
-          ),
-          // Bottom Navigation
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileCard() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.green, Colors.black],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        title: const Text(
+          'Profil',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        borderRadius: BorderRadius.circular(20),
+        centerTitle: true,
       ),
-      child: Row(
+      body: ListView(
         children: [
-          // Foto Profil
-          Container(
-            width: 60,
-            height: 80,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/rapli.png'),
-                fit: BoxFit.cover,
-              ),
-              shape: BoxShape.circle,
-              color: Colors.white, // Tempat foto profil
-            ),
-          ),
-          const SizedBox(width: 10),
-          // Nama dan NIM
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            
-              Text(
-                "Rafli Fauzan Rauf",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-              Text(
-                "2211104050",
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 10,
-                ),
-              ),
-            ],
-          ),
+          _buildHeader(),
+          const SizedBox(height: 20),
+          _buildSectionTitle("Personal info"),
+          _buildInfoTile(Icons.person, "Nama", username),
+          _buildInfoTile(Icons.phone, "Nomor Telepon", generateRandomIndoPhoneNumber()),
+          _buildInfoTile(Icons.email, "Alamat Email", email),
+          const SizedBox(height: 20),
+          _buildSectionTitle("Settings"),
+          _buildSwitchTile("Allow Face ID", allowFaceId, (val) {
+            setState(() => allowFaceId = val);
+          }),
+          _buildSwitchTile("Showing Coins", showCoins, (val) {
+            setState(() => showCoins = val);
+          }),
+          _buildSwitchTile("Incognito mode", incognitoMode, (val) {
+            setState(() => incognitoMode = val);
+          }),
+          _buildInfoTile(Icons.lock, "Code to enter into the app", "Change entrance code"),
+          _buildInfoTile(Icons.language, "Language", "English"),
+          const SizedBox(height: 40),
         ],
       ),
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String title, {bool isLogout = false}) {
-  return InkWell( // Menggunakan InkWell agar memberikan efek visual saat disentuh
-    onTap: () {
-      if (isLogout) {
-        // Navigasi ke LoginPage menggunakan Get.offAllNamed
-        Get.offAllNamed('/login');
-        print('Logout tapped! Navigating to Login Page.');
-      } else {
-        // Tambahkan logika untuk item menu lainnya di sini jika diperlukan
-        print('Menu item $title tapped');
-        // Contoh navigasi untuk item lain (jika diperlukan)
-        // Get.toNamed('/other_page');
-      }
-    },
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: isLogout ? Colors.red : Colors.black),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(
-                color: isLogout ? Colors.red : Colors.black,
-                fontSize: 14,
-              ),
-            ),
-          ),
-          Icon(Icons.arrow_forward_ios,
-              size: 16, color: isLogout ? Colors.red : Colors.black),
-        ],
-      ),
-    ),
-  );
-}
+  Widget _buildHeader() {
+    return Column(
+      children: [
+        const CircleAvatar(
+          radius: 45,
+          backgroundImage: AssetImage('assets/images/rapli.png'),
+        ),
+        const SizedBox(height: 10),
+        InkWell(
+          onTap: () {
+          },
+          child: const Icon(Icons.edit, size: 18, color: Colors.grey),
+        )
+      ],
+    );
   }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+    );
+  }
+
+  Widget _buildInfoTile(IconData icon, String title, String subtitle) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.black),
+      title: Text(title, style: const TextStyle(fontSize: 14)),
+      subtitle: Text(subtitle, style: const TextStyle(color: Colors.grey)),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      onTap: () {
+        print('Tapped on $title');
+      },
+    );
+  }
+
+  Widget _buildSwitchTile(String title, bool value, ValueChanged<bool> onChanged) {
+    return SwitchListTile(
+      title: Text(title, style: const TextStyle(fontSize: 14)),
+      value: value,
+      onChanged: onChanged,
+      activeColor: Colors.green,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+    );
+  }
+}

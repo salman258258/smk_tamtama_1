@@ -55,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: _emailController, // Controller untuk email
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: const Color(0xFFF1F1F1),
+                  fillColor: Colors.grey[100],
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
@@ -95,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: _isObscured,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: const Color(0xFFF1F1F1),
+                  fillColor: Colors.grey[100],
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
