@@ -1,2 +1,0 @@
-/Users/salmanalfarizzi/smk_tamtama_1/android/app/.cxx/Debug/3q5r3x37/x86_64/CMakeFiles/edit_cache.dir
-/Users/salmanalfarizzi/smk_tamtama_1/android/app/.cxx/Debug/3q5r3x37/x86_64/CMakeFiles/rebuild_cache.dir
