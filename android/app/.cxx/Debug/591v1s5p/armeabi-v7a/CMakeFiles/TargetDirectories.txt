@@ -1,0 +1,2 @@
+/Users/salmanalfarizzi/smk_tamtama_1/android/app/.cxx/Debug/591v1s5p/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/salmanalfarizzi/smk_tamtama_1/android/app/.cxx/Debug/591v1s5p/armeabi-v7a/CMakeFiles/rebuild_cache.dir
