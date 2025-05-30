@@ -19,9 +19,6 @@ Berisi seluruh kode logika dan halaman (page) utama aplikasi. Semua fungsionalit
 output ui/
 Berfungsi untuk menampung hasil rancangan tampilan antarmuka (UI) dari masing-masing halaman dalam aplikasi. Folder ini digunakan untuk dokumentasi visual agar pengembangan UI lebih terstruktur dan terkontrol.
 
-android/, ios/, web/, macos/, windows/, linux/
-Folder default Flutter untuk mendukung build aplikasi ke berbagai platform.
-
 assets/
 Tempat menyimpan gambar, ikon, dan file pendukung UI lainnya.
 
