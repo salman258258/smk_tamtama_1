@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smk_tamtama_1/screens/taskreport.dart';
 
 import 'subabsence.dart'; // Pastikan file absence.dart ada di direktori yang sama
 
@@ -12,7 +13,13 @@ class ReportPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Laporan'),
+        title: const Text(
+          'Laporan',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -29,7 +36,8 @@ class ReportPage extends StatelessWidget {
             _buildReportItem(
               title: 'Tugas',
               subtitle: 'Ini adalah cara kamu untuk melihat tugas.',
-              onTap: () {}, // Tambahkan logika untuk halaman tugas
+              onTap: () =>
+                  Get.to(() => TaskReport()), // Navigasi menggunakan GetX
             ),
           ],
         ),

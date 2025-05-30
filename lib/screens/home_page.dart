@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smk_tamtama_1/screens/jadwal.dart';
 import 'package:smk_tamtama_1/screens/nilai_page.dart';
+import 'package:smk_tamtama_1/screens/notifpage.dart';
 import 'package:smk_tamtama_1/screens/report_page.dart';
+import 'package:smk_tamtama_1/screens/task_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -146,10 +148,12 @@ class _HomePageState extends State<HomePage> {
               const Spacer(),
               Row(
                 children: [
-                  _buildCircleIcon(Icons.notifications_none),
+                  GestureDetector(
+                    onTap: () => Get.to(() => NotifPage()),
+                    child: _buildCircleIcon(Icons.notifications_none),
+                  ),
                   const SizedBox(width: 8),
-                  _buildCircleIcon(
-                      Icons.sync_alt), // bisa kamu ganti sesuai kebutuhan
+                  _buildCircleIcon(Icons.sync_alt),
                 ],
               ),
             ],
@@ -296,7 +300,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildFeatureSection() {
     List<Map<String, dynamic>> features = [
-      {'icon': 'assets/icons/book.png', 'label': 'PR', 'screen': null},
+      {
+        'icon': 'assets/icons/book.png',
+        'label': 'PR',
+        'screen': () => const TaskPage()
+      },
       {
         'icon': 'assets/icons/grade.png',
         'label': 'Nilai',
@@ -436,7 +444,7 @@ class _HomePageState extends State<HomePage> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         border: Border(
-          left: BorderSide(color: Colors.red, width: 3),
+          left: BorderSide(color: Colors.green, width: 3),
         ),
         boxShadow: [
           BoxShadow(

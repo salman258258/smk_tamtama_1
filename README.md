@@ -1,16 +1,36 @@
-# smk_tamtama_1
+📚 Aplikasi Akademik dan Absensi SMK Tamtama 1 Sidareja
+Proyek ini merupakan aplikasi akademik dan absensi berbasis Flutter yang dikembangkan untuk menunjang kegiatan belajar mengajar di SMK Tamtama 1 Sidareja. Aplikasi ini dirancang agar siswa, guru, dan pihak sekolah dapat dengan mudah mengakses informasi akademik, melakukan pencatatan absensi, menerima tugas, dan menerima notifikasi kegiatan sekolah secara digital.
 
-A new Flutter project.
+✨ Fitur Utama
+Pencatatan dan pemantauan absensi siswa
 
-## Getting Started
+Pengelolaan tugas dan pekerjaan rumah (PR)
 
-This project is a starting point for a Flutter application.
+Halaman notifikasi kegiatan akademik
 
-A few resources to get you started if this is your first Flutter project:
+Tampilan UI ramah pengguna dan responsif
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Dukungan lintas platform (Android)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🗂 Struktur Folder Proyek
+lib/
+Berisi seluruh kode logika dan halaman (page) utama aplikasi. Semua fungsionalitas aplikasi dikembangkan di folder ini.
+
+output ui/
+Berfungsi untuk menampung hasil rancangan tampilan antarmuka (UI) dari masing-masing halaman dalam aplikasi. Folder ini digunakan untuk dokumentasi visual agar pengembangan UI lebih terstruktur dan terkontrol.
+
+assets/
+Tempat menyimpan gambar, ikon, dan file pendukung UI lainnya.
+
+test/
+Folder untuk menyimpan file testing aplikasi.
+
+.gitignore, pubspec.yaml, README.md, dll
+File konfigurasi dan metadata proyek yang dikelola oleh git.
+
+📌 Catatan Pengembangan
+Semua coding logika dan halaman utama wajib diletakkan di dalam folder lib/.
+
+Untuk dokumentasi tampilan UI halaman, gunakan folder output ui/ agar pengembangan antar tim lebih terarah.
+
+Update changelog atau deskripsi commit sesuai perubahan yang dilakukan agar riwayat pengembangan lebih mudah dilacak.
